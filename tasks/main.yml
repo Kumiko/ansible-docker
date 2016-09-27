@@ -1,0 +1,29 @@
+# roles/docker/tasks/main.yml
+---
+- name: add docker apt key
+  apt_key:
+    keyserver: "{{ docker_apt_keyserver }}"
+    id: "{{ docker_apt_key_id }}"
+  become: yes
+  tags:
+    - docker
+    - installation
+
+- name: add docker repository
+  apt_repository:
+    repo: "{{ docket_apt_repository }}"
+    update_cache: yes
+  become: yes
+  tags:
+    - docker
+    - installation
+
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items: "{{ docker_pkgs }}"
+  become: yes
+  tags:
+    - docker
+    - installation
